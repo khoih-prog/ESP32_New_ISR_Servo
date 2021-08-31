@@ -115,7 +115,7 @@ This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_I
 ## Prerequisites
 
 1. [`Arduino IDE 1.8.15+`](https://www.arduino.cc/en/Main/Software)
-2. [`ESP32 core v2.0.0-rc2+`](https://github.com/espressif/arduino-esp32/releases/tag/2.0.0-rc2) for ESP32, ESP32_S2/C3-based boards.
+2. [`ESP32 core v2.0.0+`](https://github.com/espressif/arduino-esp32/releases/tag/2.0.0) for ESP32, ESP32_S2/C3-based boards.
 
 ---
 
