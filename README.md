@@ -6,6 +6,8 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/ESP32_New_ISR_Servo.svg)](http://github.com/khoih-prog/ESP32_New_ISR_Servo/issues)
 
+<a href="https://www.buymeacoffee.com/khoihprog6" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+
 ---
 ---
 
@@ -114,9 +116,8 @@ This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_I
 
 ## Prerequisites
 
-1. [`Arduino IDE 1.8.15+`](https://www.arduino.cc/en/Main/Software)
-2. [`ESP32 core v2.0.0+`](https://github.com/espressif/arduino-esp32/releases/tag/2.0.0) for ESP32, ESP32_S2/C3-based boards.
-
+1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
+2. [`ESP32 Core 2.0.2+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
 ---
 
 ## Installation
