@@ -1,21 +1,21 @@
 /****************************************************************************************************************************
   ESP32_New_FastTimerInterrupt.h
-  For ESP32, ESP32_S2, ESP32_C3 boards with ESP32 core v2.0.0-rc1+
+  For ESP32, ESP32_S2, ESP32_S3, ESP32_C3 boards with ESP32 core v2.0.0+
   Written by Khoi Hoang
 
   Built by Khoi Hoang https://github.com/khoih-prog/ESP32_New_ISR_Servo
   Licensed under MIT license
 
-  The ESP32, ESP32_S2, ESP32_C3 have two timer groups, TIMER_GROUP_0 and TIMER_GROUP_1
-  1) each group of ESP32, ESP32_S2 has two general purpose hardware timers, TIMER_0 and TIMER_1
+  The ESP32, ESP32_S2, ESP32_S3, ESP32_C3 have two timer groups, TIMER_GROUP_0 and TIMER_GROUP_1
+  1) each group of ESP32, ESP32_S2, ESP32_S3 has two general purpose hardware timers, TIMER_0 and TIMER_1
   2) each group of ESP32_C3 has ony one general purpose hardware timer, TIMER_0
   
-  All the timers are based on 64 bits counters and 16 bit prescalers. The timer counters can be configured to count up or down 
-  and support automatic reload and software reload. They can also generate alarms when they reach a specific value, defined by 
-  the software. The value of the counter can be read by the software program.
+  All the timers are based on 64-bit counters (except 54-bit counter for ESP32_S3 counter) and 16 bit prescalers. 
+  The timer counters can be configured to count up or down and support automatic reload and software reload. 
+  They can also generate alarms when they reach a specific value, defined by the software. 
+  The value of the counter can be read by the software program.
 
-  Now even you use all these new 16 ISR-based timers,with their maximum interval practically unlimited (limited only by
-  unsigned long miliseconds), you just consume only one ESP32-S2 timer and avoid conflicting with other cores' tasks.
+  Now these new 16 ISR-based PWM servo contro uses only 1 hardware timer.
   The accuracy is nearly perfect compared to software timers. The most important feature is they're ISR-based timers
   Therefore, their executions are not blocked by bad-behaving functions / tasks.
   This important feature is absolutely necessary for mission-critical tasks.
@@ -27,11 +27,12 @@
   Based on BlynkTimer.h
   Author: Volodymyr Shymanskyy
 
-  Version: 1.0.0
+  Version: 1.1.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
   1.0.0   K Hoang      15/08/2021 Initial coding for ESP32, ESP32_S2, ESP32_C3 boards with ESP32 core v2.0.0-rc1+
+  1.1.0   K Hoang      12/02/2022 Add support to new ESP32-S3. Convert to h-only library. Optimize code.
  *****************************************************************************************************************************/
 
 #pragma once
@@ -43,6 +44,9 @@
         ARDUINO_METRO_ESP32S2 || ARDUINO_MAGTAG29_ESP32S2 || ARDUINO_FUNHOUSE_ESP32S2 || \
         ARDUINO_ADAFRUIT_FEATHER_ESP32S2_NOPSRAM )
   #define USING_ESP32_S2_NEW_ISR_SERVO         true
+#elif ( defined(ARDUINO_ESP32S3_DEV) || defined(ARDUINO_ESP32_S3_BOX) || defined(ARDUINO_TINYS3) || \
+        defined(ARDUINO_PROS3) || defined(ARDUINO_FEATHERS3) )
+  #define USING_ESP32_S3_NEW_ISR_SERVO         true    
 #elif ( ARDUINO_ESP32C3_DEV )
   #define USING_ESP32_C3_NEW_ISR_SERVO         true  
 #elif defined(ESP32)
@@ -242,7 +246,7 @@ class ESP32FastTimerInterrupt
 
     // frequency (in hertz)
     // No params and duration now. To be added in the future by adding similar functions here or to esp32-hal-timer.c
-    bool setFrequency(float frequency, esp32_timer_callback callback)
+    bool setFrequency(const float& frequency, esp32_timer_callback callback)
     {
       if (_timerNo < MAX_ESP32_NUM_TIMERS)
       {      
@@ -261,6 +265,14 @@ class ESP32FastTimerInterrupt
         ISR_SERVO_LOGERROR3(F("_timerIndex ="), _timerIndex, F(", _timerGroup ="), _timerGroup);
         ISR_SERVO_LOGERROR3(F("_count ="), (uint32_t) (_timerCount >> 32) , F("-"), (uint32_t) (_timerCount));
         ISR_SERVO_LOGERROR1(F("timer_set_alarm_value ="), TIMER_SCALE / frequency);
+#elif USING_ESP32_S3_NEW_ISR_SERVO
+        // ESP32-S3 is embedded with four 54-bit general-purpose timers, which are based on 16-bit prescalers
+        // and 54-bit auto-reload-capable up/down-timers
+        ISR_SERVO_LOGERROR3(F("ESP32_S3_TimerInterrupt: _timerNo ="), _timerNo, F(", _fre ="), TIMER_BASE_CLK / TIMER_DIVIDER);
+        ISR_SERVO_LOGERROR3(F("TIMER_BASE_CLK ="), TIMER_BASE_CLK, F(", TIMER_DIVIDER ="), TIMER_DIVIDER);
+        ISR_SERVO_LOGERROR3(F("_timerIndex ="), _timerIndex, F(", _timerGroup ="), _timerGroup);
+        ISR_SERVO_LOGERROR3(F("_count ="), (uint32_t) (_timerCount >> 32) , F("-"), (uint32_t) (_timerCount));
+        ISR_SERVO_LOGERROR1(F("timer_set_alarm_value ="), TIMER_SCALE / frequency);        
 #else
         ISR_SERVO_LOGERROR3(F("ESP32_TimerInterrupt: _timerNo ="), _timerNo, F(", _fre ="), TIMER_BASE_CLK / TIMER_DIVIDER);
         ISR_SERVO_LOGERROR3(F("TIMER_BASE_CLK ="), TIMER_BASE_CLK, F(", TIMER_DIVIDER ="), TIMER_DIVIDER);
@@ -304,7 +316,7 @@ class ESP32FastTimerInterrupt
 
     // interval (in microseconds) and duration (in milliseconds). Duration = 0 or not specified => run indefinitely
     // No params and duration now. To be addes in the future by adding similar functions here or to esp32-hal-timer.c
-    bool attachInterruptInterval(unsigned long interval, esp32_timer_callback callback)
+    bool attachInterruptInterval(const unsigned long& interval, esp32_timer_callback callback)
     {
       return setFrequency( (float) ( 1000000.0f / interval), callback);
     }

@@ -6,24 +6,25 @@
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
 [![GitHub issues](https://img.shields.io/github/issues/khoih-prog/ESP32_New_ISR_Servo.svg)](http://github.com/khoih-prog/ESP32_New_ISR_Servo/issues)
 
-<a href="https://www.buymeacoffee.com/khoihprog6" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 60px !important;width: 217px !important;" ></a>
+<a href="https://www.buymeacoffee.com/khoihprog6" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 181px !important;" ></a>
 
 ---
 ---
 
 ## Table of Contents
 
+* [Important Change from v1.1.0](#Important-Change-from-v110)
 * [Why do we need this ESP32_New_ISR_Servo library](#why-do-we-need-this-esp32_new_isr_servo-library)
   * [Features](#features)
   * [Important Notes about using ISR](#important-notes-about-using-isr)
   * [Currently supported Boards](#currently-supported-boards)
-* [Changelog](#changelog)
-  * [Releases v1.0.0](#releases-v100)
+* [Changelog](changelog.md)
 * [Prerequisites](#prerequisites)
 * [Installation](#installation)
   * [Use Arduino Library Manager](#use-arduino-library-manager)
   * [Manual Install](#manual-install)
   * [VS Code & PlatformIO](#vs-code--platformio)
+* [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error) 
 * [HOWTO Use analogRead() with ESP32 running WiFi and/or BlueTooth (BT/BLE)](#howto-use-analogread-with-esp32-running-wifi-andor-bluetooth-btble)
   * [1. ESP32 has 2 ADCs, named ADC1 and ADC2](#1--esp32-has-2-adcs-named-adc1-and-adc2)
   * [2. ESP32 ADCs functions](#2-esp32-adcs-functions)
@@ -40,14 +41,16 @@
   * [ 4. ISR_MultiServos](examples/ISR_MultiServos)
   * [ 5. MultipleRandomServos](examples/MultipleRandomServos)
   * [ 6. MultipleServos](examples/MultipleServos)
+  * [ 7. multiFileProject](examples/multiFileProject) **New**
 * [Example ESP32_New_ISR_MultiServos](#example-esp32_new_isr_multiservos)
   * [1. File ESP32_New_ISR_MultiServos.ino](#1-file-esp32_new_isr_multiservosino)
 * [Debug Terminal Output Samples](#debug-terminal-output-samples)
   * [1. ESP32_New_MultipleRandomServos on ESP32S2_DEV](#1-esp32_new_multiplerandomservos-on-esp32s2_dev)
   * [2. ESP32_New_ISR_MultiServos on ESP32S2_DEV](#2-esp32_new_isr_multiservos-on-esp32s2_dev)
+  * [3. ESP32_New_MultipleRandomServos on ESP32S3_DEV](#3-esp32_new_multiplerandomservos-on-ESP32S3_DEV) **New**
+  * [4. ESP32_New_ISR_MultiServos on ESP32S3_DEV](#4-esp32_new_isr_multiservos-on-ESP32S3_DEV) **New**
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
-* [Releases](#releases)
 * [Issues](#issues)
 * [TO DO](#to-do)
 * [DONE](#done)
@@ -55,6 +58,13 @@
 * [Contributing](#contributing)
 * [License](#license)
 * [Copyright](#copyright)
+
+---
+---
+
+### Important Change from v1.1.0
+
+Please have a look at [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error)
 
 
 ---
@@ -96,21 +106,11 @@ This library enables you to use `1 Hardware Timer` on an ESP32, ESP32_S2, ESP32_
 
 This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_ISR_Servo) currently supports these following boards:
 
-1. ESP32 boards, such as ESP32_DEV, etc.
-2. ESP32S2-based boards, such as ESP32S2_DEV, ESP32_S2 Saola, etc.
-3. ESP32C3-based boards, such as ESP32C3_DEV, etc.
+1. ESP32 boards, such as `ESP32_DEV`, etc.
+2. ESP32S2-based boards, such as `ESP32S2_DEV`, `ESP32_S2 Saola`, etc.
+3. ESP32C3-based boards, such as `ESP32C3_DEV`, etc. **New**
+4. ESP32_S3 (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.) **New**
  
----
----
-
-## Changelog
-
-### Releases v1.0.0
-
-1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32, ESP32_S2, ESP32_C3-based board
-2. Tested with [ESP32 core v2.0.0-rc1+](https://github.com/espressif/arduino-esp32/releases/tag/2.0.0-rc1)
-
-
 ---
 ---
 
@@ -118,6 +118,9 @@ This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_I
 
 1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
 2. [`ESP32 Core 2.0.2+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
+
+
+---
 ---
 
 ## Installation
@@ -140,8 +143,35 @@ Another way to install is to:
 
 1. Install [VS Code](https://code.visualstudio.com/)
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
-3. Install [**ESP32_New_ISR_Servo** library](https://platformio.org/lib/show/12679/ESP32_New_ISR_Servo) by using [Library Manager](https://platformio.org/lib/show/12679/ESP32_New_ISR_Servo/installation). Search for **ESP32_New_ISR_Servo** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
+3. Install [**ESP32_New_ISR_Servo** library](https://registry.platformio.org/libraries/khoih-prog/ESP32_New_ISR_Servo) by using [Library Manager](https://registry.platformio.org/libraries/khoih-prog/ESP32_New_ISR_Servo/installation). Search for **ESP32_New_ISR_Servo** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
 4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
+
+
+---
+---
+
+### HOWTO Fix `Multiple Definitions` Linker Error
+
+The current library implementation, using `xyz-Impl.h` instead of standard `xyz.cpp`, possibly creates certain `Multiple Definitions` Linker error in certain use cases.
+
+You can include this `.hpp` file
+
+```
+// Can be included as many times as necessary, without `Multiple Definitions` Linker Error
+#include "ESP32_New_ISR_Servo.hpp"     //https://github.com/khoih-prog/ESP32_New_ISR_Servo
+```
+
+in many files. But be sure to use the following `.h` file **in just 1 `.h`, `.cpp` or `.ino` file**, which must **not be included in any other file**, to avoid `Multiple Definitions` Linker Error
+
+```
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
+#include "ESP32_New_ISR_Servo.h"           //https://github.com/khoih-prog/ESP32_New_ISR_Servo
+```
+
+Check the new [**multiFileProject** example](examples/multiFileProject) for a `HOWTO` demo.
+
+Have a look at the discussion in [Different behaviour using the src_cpp or src_h lib #80](https://github.com/khoih-prog/ESPAsync_WiFiManager/discussions/80)
+
 
 ---
 ---
@@ -182,6 +212,7 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
 - Use ADC1, and pins GPIO32-GPIO39
 - If somehow it's a must to use those pins serviced by ADC2 (**GPIO0, 2, 4, 12, 13, 14, 15, 25, 26 and 27**), use the **fix mentioned at the end** of [**ESP_WiFiManager Issue 39: Not able to read analog port when using the autoconnect example**](https://github.com/khoih-prog/ESP_WiFiManager/issues/39) to work with ESP32 WiFi/BlueTooth (BT/BLE).
 
+
 ---
 ---
 
@@ -189,9 +220,9 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
 
 ### ESP32 Hardware Timers
 
-  - **The ESP32 and ESP32_S2 has two timer groups, each one with two general purpose hardware timers.**
+  - **The ESP32, ESP32_S2 and ESP32_S3 has two timer groups, each one with two general purpose hardware timers.**
   - **The ESP32_C3 has two timer groups, each one with only one general purpose hardware timer.**
-  - All the timers are based on **64-bit counters and 16-bit prescalers.**
+  - All the timers are based on **64-bit counters (except 54-bit counter for ESP32_S3 counter) and 16-bit prescalers.**
   - The timer counters can be configured to count up or down and support automatic reload and software reload.
   - They can also generate alarms when they reach a specific value, defined by the software. 
   - The value of the counter can be read by the software program.
@@ -201,10 +232,10 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
 
 ```
 // returns last position in degrees if success, or -1 on wrong servoIndex
-int getPosition(unsigned servoIndex);
+float getPosition(const uint8_t& servoIndex);
 
 // returns pulseWidth in microsecs (within min/max range) if success, or 0 on wrong servoIndex
-unsigned int getPulseWidth(unsigned servoIndex);
+uint32_t getPulseWidth(const uint8_t& servoIndex);
 ```
 
 ### What special in this [ESP32_New_ISR_Servo library](https://github.com/khoih-prog/ESP32_New_ISR_Servo)
@@ -253,7 +284,7 @@ How to use:
   #define USE_ESP32_TIMER_NO          3
 #endif
   
-
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "ESP32_New_ISR_Servo.h"
 
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
@@ -291,8 +322,8 @@ void setup()
   //Select ESP32 timer USE_ESP32_TIMER_NO
   ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
 
-  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D1, MIN_MICROS, MAX_MICROS);
-  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D2, MIN_MICROS, MAX_MICROS);
+  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D2, MIN_MICROS, MAX_MICROS);
+  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D3, MIN_MICROS, MAX_MICROS);
 
   if (servoIndex1 != -1)
     Serial.println(F("Setup Servo1 OK"));
@@ -361,8 +392,11 @@ void loop()
  4. [ISR_MultiServos](examples/ISR_MultiServos)
  5. [MultipleRandomServos](examples/MultipleRandomServos)
  6. [MultipleServos](examples/MultipleServos)
+ 7. [**multiFileProject**](examples/multiFileProject) **New** 
  
 ---
+---
+
 
 ### Example [ESP32_New_ISR_MultiServos](examples/ESP32_New_ISR_MultiServos)
 
@@ -385,7 +419,7 @@ void loop()
   #define USE_ESP32_TIMER_NO          3
 #endif
   
-
+// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "ESP32_New_ISR_Servo.h"
 
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
@@ -423,8 +457,8 @@ void setup()
   //Select ESP32 timer USE_ESP32_TIMER_NO
   ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
 
-  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D1, MIN_MICROS, MAX_MICROS);
-  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D2, MIN_MICROS, MAX_MICROS);
+  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D2, MIN_MICROS, MAX_MICROS);
+  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D3, MIN_MICROS, MAX_MICROS);
 
   if (servoIndex1 != -1)
     Serial.println(F("Setup Servo1 OK"));
@@ -490,7 +524,7 @@ void loop()
 
 ```
 Starting ESP32_New_MultipleRandomServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.0.0
+ESP32_New_ISR_Servo v1.1.0
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -606,7 +640,7 @@ Servos sweeps from 0-180 degress
 
 ```
 Starting ESP32_New_ISR_MultiServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.0.0
+ESP32_New_ISR_Servo v1.1.0
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -622,6 +656,111 @@ Servo1 pos = 90, Servo2 pos = 90
 Servo1 pos = 120, Servo2 pos = 60
 Servo1 pos = 150, Servo2 pos = 30
 Servo1 pos = 180, Servo2 pos = 0
+```
+
+---
+
+### 3. ESP32_New_MultipleRandomServos on ESP32S3_DEV
+
+
+```
+Starting ESP32_New_MultipleRandomServos on ESP32S3_DEV
+ESP32_New_ISR_Servo v1.1.0
+[ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
+[ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
+[ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
+[ISR_SERVO] _count = 0 - 10
+[ISR_SERVO] timer_set_alarm_value = 10.00
+[ISR_SERVO] Starting  ITimer OK
+Setup OK Servo index = 0
+Setup OK Servo index = 1
+Setup OK Servo index = 2
+Setup OK Servo index = 3
+Setup OK Servo index = 4
+Setup OK Servo index = 5
+Servos @ 0 degree
+Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+800
+Servos idx = 1, act. pos. (deg) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 80 , pos = 0.00
+800
+Servos idx = 2, act. pos. (deg) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 80 , pos = 0.00
+800
+Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 80 , pos = 0.00
+800
+Servos idx = 4, act. pos. (deg) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 80 , pos = 0.00
+800
+Servos idx = 5, act. pos. (deg) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 80 , pos = 0.00
+800
+Servos @ 90 degree
+Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 162 , pos = 90.00
+90.00, pulseWidth (us) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 162 , pos = 90.00
+```
+
+---
+
+### 4. ESP32_New_ISR_MultiServos on ESP32S3_DEV
+
+
+```
+Starting ESP32_New_ISR_MultiServos on ESP32S3_DEV
+ESP32_New_ISR_Servo v1.1.0
+[ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
+[ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
+[ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
+[ISR_SERVO] _count = 0 - 10
+[ISR_SERVO] timer_set_alarm_value = 10.00
+[ISR_SERVO] Starting  ITimer OK
+Setup Servo1 OK
+Setup Servo2 OK
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 0, Servo2 pos = 180
 ```
 
 ---
@@ -650,16 +789,6 @@ Sometimes, the library will only work if you update the board core to the latest
 ---
 ---
 
-## Releases
-
-### Releases v1.0.0
-
-1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32_S2.
-2. Tested with ESP32 core v2.0.0-rc1 and v1.0.6
-
----
----
-
 ### Issues
 
 Submit issues to: [ESP32_New_ISR_Servo issues](https://github.com/khoih-prog/ESP32_New_ISR_Servo/issues)
@@ -679,6 +808,11 @@ Submit issues to: [ESP32_New_ISR_Servo issues](https://github.com/khoih-prog/ESP
 2. Add functions `getPosition()` and `getPulseWidth()`
 3. Optimize the code
 4. Add more complicated examples
+5. Add support to new `ESP32-S3` (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.)
+6. Convert to h-only library.
+7. Optimize library code by using `reference-passing` instead of `value-passing`
+8. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
+9. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
 
 ---
 ---

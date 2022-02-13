@@ -1,0 +1,36 @@
+# ESP32_New_ISR_Servo Library
+
+[![arduino-library-badge](https://www.ardu-badge.com/badge/ESP32_New_ISR_Servo.svg?)](https://www.ardu-badge.com/ESP32_New_ISR_Servo)
+[![GitHub release](https://img.shields.io/github/release/khoih-prog/ESP32_New_ISR_Servo.svg)](https://github.com/khoih-prog/ESP32_New_ISR_Servo/releases)
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/main/LICENSE)
+[![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
+[![GitHub issues](https://img.shields.io/github/issues/khoih-prog/ESP32_New_ISR_Servo.svg)](http://github.com/khoih-prog/ESP32_New_ISR_Servo/issues)
+
+---
+---
+
+## Table of Contents
+
+* [Changelog](#changelog)
+  * [Releases v1.1.0](#releases-v110)
+  * [Releases v1.0.0](#releases-v100)
+
+---
+---
+
+## Changelog
+
+### Releases v1.1.0
+
+1. Add support to new `ESP32-S3` (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.)
+2. Convert to h-only library.
+3. Optimize library code by using `reference-passing` instead of `value-passing`
+4. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
+5. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
+
+### Releases v1.0.0
+
+1. Basic 16 ISR-based servo controllers using 1 hardware timer for ESP32, ESP32_S2, ESP32_C3-based board
+2. Tested with [ESP32 core v2.0.0-rc1+](https://github.com/espressif/arduino-esp32/releases/tag/2.0.0-rc1)
+
+
