@@ -1,22 +1,21 @@
-# ESP32_ISR_Servo Library
+# ESP32_New_ISR_Servo Library
 
-[![arduino-library-badge](https://www.ardu-badge.com/badge/ESP32_ISR_Servo.svg?)](https://www.ardu-badge.com/ESP32_ISR_Servo)
-[![GitHub release](https://img.shields.io/github/release/khoih-prog/ESP32_ISR_Servo.svg)](https://github.com/khoih-prog/ESP32_ISR_Servo/releases)
-[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/khoih-prog/ESP32_ISR_Servo/blob/master/LICENSE)
+[![arduino-library-badge](https://www.ardu-badge.com/badge/ESP32_New_ISR_Servo.svg?)](https://www.ardu-badge.com/ESP32_New_ISR_Servo)
+[![GitHub release](https://img.shields.io/github/release/khoih-prog/ESP32_New_ISR_Servo.svg)](https://github.com/khoih-prog/ESP32_New_ISR_Servo/releases)
+[![GitHub](https://img.shields.io/github/license/mashape/apistatus.svg)](https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/main/LICENSE)
 [![contributions welcome](https://img.shields.io/badge/contributions-welcome-brightgreen.svg?style=flat)](#Contributing)
-[![GitHub issues](https://img.shields.io/github/issues/khoih-prog/ESP32_ISR_Servo.svg)](http://github.com/khoih-prog/ESP32_ISR_Servo/issues)
+[![GitHub issues](https://img.shields.io/github/issues/khoih-prog/ESP32_New_ISR_Servo.svg)](http://github.com/khoih-prog/ESP32_New_ISR_Servo/issues)
 
-<a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Donate to my libraries using BuyMeACoffee" style="height: 50px !important;width: 181px !important;" ></a>
-<a href="https://www.buymeacoffee.com/khoihprog6" title="Donate to my libraries using BuyMeACoffee"><img src="https://img.shields.io/badge/buy%20me%20a%20coffee-donate-orange.svg?logo=buy-me-a-coffee&logoColor=FFDD00" style="height: 20px !important;width: 200px !important;" ></a>
+<a href="https://www.buymeacoffee.com/khoihprog6" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" style="height: 50px !important;width: 181px !important;" ></a>
 
 ---
 ---
 
 ## Table of Contents
 
-* [Important Change from v1.3.0](#Important-Change-from-v130)
 * [Important Change from v1.2.0](#Important-Change-from-v120)
-* [Why do we need this ESP32_ISR_Servo library](#why-do-we-need-this-esp32_isr_servo-library)
+* [Important Change from v1.1.0](#Important-Change-from-v110)
+* [Why do we need this ESP32_New_ISR_Servo library](#why-do-we-need-this-esp32_new_isr_servo-library)
   * [Features](#features)
   * [Important Notes about using ISR](#important-notes-about-using-isr)
   * [Currently supported Boards](#currently-supported-boards)
@@ -26,7 +25,7 @@
   * [Use Arduino Library Manager](#use-arduino-library-manager)
   * [Manual Install](#manual-install)
   * [VS Code & PlatformIO](#vs-code--platformio)
-* [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error)
+* [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error) 
 * [HOWTO Use analogRead() with ESP32 running WiFi and/or BlueTooth (BT/BLE)](#howto-use-analogread-with-esp32-running-wifi-andor-bluetooth-btble)
   * [1. ESP32 has 2 ADCs, named ADC1 and ADC2](#1--esp32-has-2-adcs-named-adc1-and-adc2)
   * [2. ESP32 ADCs functions](#2-esp32-adcs-functions)
@@ -34,22 +33,23 @@
 * [More useful Information](#more-useful-information)
   * [ESP32 Hardware Timers](#esp32-hardware-timers)
   * [New functions](#new-functions)
-  * [What special in this ESP32_ISR_Servo library](#what-special-in-this-esp32_isr_servo-library)
+  * [What special in this ESP32_New_ISR_Servo library](#what-special-in-this-esp32_new_isr_servo-library)
 * [HOWTO Usage](#howto-usage)
 * [Examples](#examples)
-  * [ 1. **multiFileProject**](examples/multiFileProject) **New**
-  * [ 2. ESP32_ISR_MultiServos](examples/ESP32_ISR_MultiServos)
-  * [ 3. ESP32_MultipleRandomServos](examples/ESP32_MultipleRandomServos)
-  * [ 4. ESP32_MultipleServos](examples/ESP32_MultipleServos)
-  * [ 5. ISR_MultiServos](examples/ISR_MultiServos)
-  * [ 6. MultipleRandomServos](examples/MultipleRandomServos)
-  * [ 7. MultipleServos](examples/MultipleServos)
-* [Example ESP32_ISR_MultiServos](#example-ESP32_ISR_MultiServos)
+  * [ 1. ESP32_New_ISR_MultiServos](examples/ESP32_New_ISR_MultiServos)
+  * [ 2. ESP32_New_MultipleRandomServos](examples/ESP32_New_MultipleRandomServos)
+  * [ 3. ESP32_New_MultipleServos](examples/ESP32_New_MultipleServos)
+  * [ 4. ISR_MultiServos](examples/ISR_MultiServos)
+  * [ 5. MultipleRandomServos](examples/MultipleRandomServos)
+  * [ 6. MultipleServos](examples/MultipleServos)
+  * [ 7. multiFileProject](examples/multiFileProject) **New**
+* [Example ESP32_New_ISR_MultiServos](#example-esp32_new_isr_multiservos)
+  * [1. File ESP32_New_ISR_MultiServos.ino](#1-file-esp32_new_isr_multiservosino)
 * [Debug Terminal Output Samples](#debug-terminal-output-samples)
-  * [1. ESP32_MultipleRandomServos on ESP32_DEV](#1-esp32_multiplerandomservos-on-esp32_dev)
-  * [2. ESP32_ISR_MultiServos on ESP32_DEV](#2-esp32_isr_multiservos-on-esp32_dev)
-  * [3. MultipleRandomServos on ESP32S3_DEV](#3-MultipleRandomServos-on-ESP32S3_DEV)
-  * [4. ESP32_ISR_MultiServos on ESP32S2_DEV](#4-ESP32_ISR_MultiServos-on-ESP32S2_DEV)
+  * [1. ESP32_New_MultipleRandomServos on ESP32S2_DEV](#1-esp32_new_multiplerandomservos-on-esp32s2_dev)
+  * [2. ESP32_New_ISR_MultiServos on ESP32S2_DEV](#2-esp32_new_isr_multiservos-on-esp32s2_dev)
+  * [3. ESP32_New_MultipleRandomServos on ESP32S3_DEV](#3-esp32_new_multiplerandomservos-on-ESP32S3_DEV) **New**
+  * [4. ESP32_New_ISR_MultiServos on ESP32S3_DEV](#4-esp32_new_isr_multiservos-on-ESP32S3_DEV) **New**
 * [Debug](#debug)
 * [Troubleshooting](#troubleshooting)
 * [Issues](#issues)
@@ -63,18 +63,20 @@
 ---
 ---
 
-### Important Change from v1.3.0
-
-Please use the **new v1.3.0+** for **ESP32 core v2.0.1+**, or the library won't work anymore.
-
 ### Important Change from v1.2.0
+
+Please use the **new v1.2.0+** for **ESP32 core v2.0.1+**, or the library won't work anymore.
+
+
+### Important Change from v1.1.0
 
 Please have a look at [HOWTO Fix `Multiple Definitions` Linker Error](#howto-fix-multiple-definitions-linker-error)
 
+
 ---
 ---
 
-### Why do we need this [ESP32_ISR_Servo library](https://github.com/khoih-prog/ESP32_ISR_Servo)
+### Why do we need this [ESP32_New_ISR_Servo library](https://github.com/khoih-prog/ESP32_New_ISR_Servo)
 
 #### Features
 
@@ -108,7 +110,7 @@ This library enables you to use `1 Hardware Timer` on an ESP32, ESP32_S2, ESP32_
 
 #### Currently supported Boards
 
-This [**ESP32_ISR_Servo** library](https://github.com/khoih-prog/ESP32_ISR_Servo) currently supports these following boards:
+This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_ISR_Servo) currently supports these following boards:
 
 1. ESP32 boards, such as `ESP32_DEV`, etc.
 2. ESP32S2-based boards, such as `ESP32S2_DEV`, `ESP32_S2 Saola`, etc.
@@ -123,6 +125,7 @@ This [**ESP32_ISR_Servo** library](https://github.com/khoih-prog/ESP32_ISR_Servo
 1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
 2. [`ESP32 Core 2.0.3+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
 
+
 ---
 ---
 
@@ -130,23 +133,23 @@ This [**ESP32_ISR_Servo** library](https://github.com/khoih-prog/ESP32_ISR_Servo
 
 ### Use Arduino Library Manager
 
-The best and easiest way is to use `Arduino Library Manager`. Search for `ESP32_ISR_Servo`, then select / install the latest version.
-You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP32_ISR_Servo.svg?)](https://www.ardu-badge.com/ESP32_ISR_Servo) for more detailed instructions.
+The best and easiest way is to use `Arduino Library Manager`. Search for `ESP32_New_ISR_Servo`, then select / install the latest version.
+You can also use this link [![arduino-library-badge](https://www.ardu-badge.com/badge/ESP32_New_ISR_Servo.svg?)](https://www.ardu-badge.com/ESP32_New_ISR_Servo) for more detailed instructions.
 
 ### Manual Install
 
 Another way to install is to:
 
-1. Navigate to [ESP32_ISR_Servo](https://github.com/khoih-prog/ESP32_ISR_Servo) page.
-2. Download the latest release `ESP32_ISR_Servo-master.zip`.
-3. Extract the zip file to `ESP32_ISR_Servo-master` directory 
-4. Copy whole `ESP32_ISR_Servo-master` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
+1. Navigate to [ESP32_New_ISR_Servo](https://github.com/khoih-prog/ESP32_New_ISR_Servo) page.
+2. Download the latest release `ESP32_New_ISR_Servo-main.zip`.
+3. Extract the zip file to `ESP32_New_ISR_Servo-main` directory 
+4. Copy whole `ESP32_New_ISR_Servo-main` folder to Arduino libraries' directory such as `~/Arduino/libraries/`.
 
 ### VS Code & PlatformIO
 
 1. Install [VS Code](https://code.visualstudio.com/)
 2. Install [PlatformIO](https://platformio.org/platformio-ide)
-3. Install [**ESP32_ISR_Servo** library](https://registry.platformio.org/libraries/khoih-prog/ESP32_ISR_Servo) by using [Library Manager](https://registry.platformio.org/libraries/khoih-prog/ESP32_ISR_Servo/installation). Search for **ESP32_ISR_Servo** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
+3. Install [**ESP32_New_ISR_Servo** library](https://registry.platformio.org/libraries/khoih-prog/ESP32_New_ISR_Servo) by using [Library Manager](https://registry.platformio.org/libraries/khoih-prog/ESP32_New_ISR_Servo/installation). Search for **ESP32_New_ISR_Servo** in [Platform.io Author's Libraries](https://platformio.org/lib/search?query=author:%22Khoi%20Hoang%22)
 4. Use included [platformio.ini](platformio/platformio.ini) file from examples to ensure that all dependent libraries will installed automatically. Please visit documentation for the other options and examples at [Project Configuration File](https://docs.platformio.org/page/projectconf.html)
 
 
@@ -161,20 +164,19 @@ You can include this `.hpp` file
 
 ```
 // Can be included as many times as necessary, without `Multiple Definitions` Linker Error
-#include "ESP32_ISR_Servo.hpp"     //https://github.com/khoih-prog/ESP32_ISR_Servo
+#include "ESP32_New_ISR_Servo.hpp"     //https://github.com/khoih-prog/ESP32_New_ISR_Servo
 ```
 
 in many files. But be sure to use the following `.h` file **in just 1 `.h`, `.cpp` or `.ino` file**, which must **not be included in any other file**, to avoid `Multiple Definitions` Linker Error
 
 ```
 // To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
-#include "ESP32_ISR_Servo.h"           //https://github.com/khoih-prog/ESP32_ISR_Servo
+#include "ESP32_New_ISR_Servo.h"           //https://github.com/khoih-prog/ESP32_New_ISR_Servo
 ```
 
 Check the new [**multiFileProject** example](examples/multiFileProject) for a `HOWTO` demo.
 
 Have a look at the discussion in [Different behaviour using the src_cpp or src_h lib #80](https://github.com/khoih-prog/ESPAsync_WiFiManager/discussions/80)
-
 
 
 ---
@@ -216,6 +218,7 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
 - Use ADC1, and pins GPIO32-GPIO39
 - If somehow it's a must to use those pins serviced by ADC2 (**GPIO0, 2, 4, 12, 13, 14, 15, 25, 26 and 27**), use the **fix mentioned at the end** of [**ESP_WiFiManager Issue 39: Not able to read analog port when using the autoconnect example**](https://github.com/khoih-prog/ESP_WiFiManager/issues/39) to work with ESP32 WiFi/BlueTooth (BT/BLE).
 
+
 ---
 ---
 
@@ -223,8 +226,9 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
 
 ### ESP32 Hardware Timers
 
-  - **The ESP32 has two timer groups, each one with two general purpose hardware timers.**
-  - All the timers are based on **64-bit counters and 16-bit prescalers.**
+  - **The ESP32, ESP32_S2 and ESP32_S3 has two timer groups, each one with two general purpose hardware timers.**
+  - **The ESP32_C3 has two timer groups, each one with only one general purpose hardware timer.**
+  - All the timers are based on **64-bit counters (except 54-bit counter for ESP32_S3 counter) and 16-bit prescalers.**
   - The timer counters can be configured to count up or down and support automatic reload and software reload.
   - They can also generate alarms when they reach a specific value, defined by the software. 
   - The value of the counter can be read by the software program.
@@ -234,13 +238,21 @@ Look in file [**adc_common.c**](https://github.com/espressif/esp-idf/blob/master
 
 ```
 // returns last position in degrees if success, or -1 on wrong servoIndex
-int getPosition(unsigned servoIndex);
+float getPosition(const uint8_t& servoIndex);
 
 // returns pulseWidth in microsecs (within min/max range) if success, or 0 on wrong servoIndex
-unsigned int getPulseWidth(unsigned servoIndex);
+uint32_t getPulseWidth(const uint8_t& servoIndex);
 ```
 
-### What special in this [ESP32_ISR_Servo library](https://github.com/khoih-prog/ESP32_ISR_Servo)
+### What special in this [ESP32_New_ISR_Servo library](https://github.com/khoih-prog/ESP32_New_ISR_Servo)
+
+This [ESP32_New_ISR_Servo library](https://github.com/khoih-prog/ESP32_New_ISR_Servo) is designed to work with [ESP32 core v2.0.0-rc1+](https://github.com/espressif/arduino-esp32/releases/tag/2.0.0-rc1) and to merge/replace these following libraries in the future
+
+1. [ESP32_ISR_Servo](https://github.com/khoih-prog/ESP32_ISR_Servo)
+2. [ESP32_S2_ISR_Servo](https://github.com/khoih-prog/ESP32_S2_ISR_Servo)
+3. [ESP32_C3_ISR_Servo](https://github.com/khoih-prog/ESP32_C3_ISR_Servo)
+
+by not using the `deprecated functions` of the new cores. Check [**Deprecation warnings with esp32-v2.0.0-rc1** #17](https://github.com/khoih-prog/ESP32TimerInterrupt/issues/17)
 
 Now these new **16 ISR-based Servo controllers** just use one ESP32 Hardware Timer. The number 16 is just arbitrarily chosen, and depending on application, you can increase that number to 32, 48, etc. without problem.
 
@@ -263,18 +275,23 @@ You'll see blynkTimer Software is blocked while system is connecting to WiFi / I
 How to use:
 
 ```
-#ifndef ESP32
-  #error This code is designed to run on ESP32 platform, not Arduino nor ESP8266! Please check your Tools->Board setting.
+#if !defined(ESP32)
+  #error This code is intended to run on the ESP32 platform! Please check your Tools->Board setting.
 #endif
 
-#define TIMER_INTERRUPT_DEBUG       1
+#define TIMER_INTERRUPT_DEBUG       0
 #define ISR_SERVO_DEBUG             1
 
-// Select different ESP32 timer number (0-3) to avoid conflict
-#define USE_ESP32_TIMER_NO          3
-
+// For ESP32_C3, select ESP32 timer number (0-1)
+// For ESP32 and ESP32_S2, select ESP32 timer number (0-3)
+#if defined( ARDUINO_ESP32C3_DEV )
+  #define USE_ESP32_TIMER_NO          1
+#else
+  #define USE_ESP32_TIMER_NO          3
+#endif
+  
 // To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
-#include "ESP32_ISR_Servo.h"
+#include "ESP32_New_ISR_Servo.h"
 
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
 #define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
@@ -306,13 +323,13 @@ void setup()
   delay(200);
 
   Serial.print(F("\nStarting ISR_MultiServos on ")); Serial.println(ARDUINO_BOARD);
-  Serial.println(ESP32_ISR_SERVO_VERSION);
+  Serial.println(ESP32_NEW_ISR_SERVO_VERSION);
   
   //Select ESP32 timer USE_ESP32_TIMER_NO
   ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
 
-  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D5, MIN_MICROS, MAX_MICROS);
-  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D6, MIN_MICROS, MAX_MICROS);
+  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D2, MIN_MICROS, MAX_MICROS);
+  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D3, MIN_MICROS, MAX_MICROS);
 
   if (servoIndex1 != -1)
     Serial.println(F("Setup Servo1 OK"));
@@ -368,7 +385,6 @@ void loop()
     delay(5000);
   }
 }
-
 ```
 
 ---
@@ -376,31 +392,41 @@ void loop()
 
 ### Examples: 
 
-
- 1. [multiFileProject](examples/multiFileProject) **New**
- 2. [ESP32_ISR_MultiServos](examples/ESP32_ISR_MultiServos)
- 3. [ESP32_MultipleRandomServos](examples/ESP32_MultipleRandomServos) 
- 4. [ESP32_MultipleServos](examples/ESP32_MultipleServos) 
- 5. [ISR_MultiServos](examples/ISR_MultiServos)
- 6. [MultipleRandomServos](examples/MultipleRandomServos)
- 7. [MultipleServos](examples/MultipleServos)
+ 1. [ESP32_New_ISR_MultiServos](examples/ESP32_New_ISR_MultiServos)
+ 2. [ESP32_New_MultipleRandomServos](examples/ESP32_New_MultipleRandomServos) 
+ 3. [ESP32_New_MultipleServos](examples/ESP32_New_MultipleServos) 
+ 4. [ISR_MultiServos](examples/ISR_MultiServos)
+ 5. [MultipleRandomServos](examples/MultipleRandomServos)
+ 6. [MultipleServos](examples/MultipleServos)
+ 7. [**multiFileProject**](examples/multiFileProject) **New** 
  
 ---
+---
 
-### Example [ESP32_ISR_MultiServos](examples/ESP32_ISR_MultiServos)
 
-https://github.com/khoih-prog/ESP32_ISR_Servo/blob/60aa83a0db13a348f29ae84f5361676d000fbb72/examples/ESP32_ISR_MultiServos/ESP32_ISR_MultiServos.ino#L72-L208
+### Example [ESP32_New_ISR_MultiServos](examples/ESP32_New_ISR_MultiServos)
+
+
+#### 1. File [ESP32_New_ISR_MultiServos.ino](examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino)
+
+https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/e05bb5d4fc2abf2bd5551388f64414626047d90b/examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino#L65-L174
 
 ---
 ---
 
 ### Debug Terminal Output Samples
 
-### 1. ESP32_MultipleRandomServos on ESP32_DEV
+### 1. ESP32_New_MultipleRandomServos on ESP32S2_DEV
 
 ```
-Starting ESP32_MultipleRandomServos on ESP32_DEV
-ESP32_ISR_Servo v1.3.0
+Starting ESP32_New_MultipleRandomServos on ESP32S2_DEV
+ESP32_New_ISR_Servo v1.2.0
+[ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
+[ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
+[ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
+[ISR_SERVO] _count = 0 - 10
+[ISR_SERVO] timer_set_alarm_value = 10.00
+[ISR_SERVO] Starting  ITimer OK
 Setup OK Servo index = 0
 Setup OK Servo index = 1
 Setup OK Servo index = 2
@@ -408,61 +434,115 @@ Setup OK Servo index = 3
 Setup OK Servo index = 4
 Setup OK Servo index = 5
 Servos @ 0 degree
-Servos idx = 0, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 1, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 2, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 3, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 4, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 5, act. pos. (deg) = 0, pulseWidth (us) = 800
+Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 80 , pos = 0
+0, pulseWidth (us) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 80 , pos = 0
+800
+Servos idx = 1, act. pos. (deg) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 80 , pos = 0
+0, pulseWidth (us) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 80 , pos = 0
+800
+Servos idx = 2, act. pos. (deg) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 80 , pos = 0
+0, pulseWidth (us) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 80 , pos = 0
+800
+Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 80 , pos = 0
+0, pulseWidth (us) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 80 , pos = 0
+800
+Servos idx = 4, act. pos. (deg) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 80 , pos = 0
+0, pulseWidth (us) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 80 , pos = 0
+800
+Servos idx = 5, act. pos. (deg) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 80 , pos = 0
+0, pulseWidth (us) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 80 , pos = 0
+800
 Servos @ 90 degree
-Servos idx = 0, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 1, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 2, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 3, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 4, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 5, act. pos. (deg) = 90, pulseWidth (us) = 1620
+Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 162 , pos = 90
+90, pulseWidth (us) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 162 , pos = 90
+1620
+Servos idx = 1, act. pos. (deg) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 162 , pos = 90
+90, pulseWidth (us) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 162 , pos = 90
+1620
+Servos idx = 2, act. pos. (deg) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 162 , pos = 90
+90, pulseWidth (us) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 162 , pos = 90
+1620
+Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 162 , pos = 90
+90, pulseWidth (us) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 162 , pos = 90
+1620
+Servos idx = 4, act. pos. (deg) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 162 , pos = 90
+90, pulseWidth (us) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 162 , pos = 90
+1620
+Servos idx = 5, act. pos. (deg) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 162 , pos = 90
+90, pulseWidth (us) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 162 , pos = 90
+1620
 Servos @ 180 degree
-Servos idx = 0, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 1, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 2, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 3, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 4, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
+Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 245 , pos = 180
+180, pulseWidth (us) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 245 , pos = 180
+2450
+Servos idx = 1, act. pos. (deg) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 245 , pos = 180
+180, pulseWidth (us) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 245 , pos = 180
+2450
+Servos idx = 2, act. pos. (deg) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 245 , pos = 180
+180, pulseWidth (us) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 245 , pos = 180
+2450
+Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 245 , pos = 180
+180, pulseWidth (us) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 245 , pos = 180
+2450
+Servos idx = 4, act. pos. (deg) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 245 , pos = 180
+180, pulseWidth (us) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 245 , pos = 180
+2450
+Servos idx = 5, act. pos. (deg) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 245 , pos = 180
+180, pulseWidth (us) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 245 , pos = 180
+2450
 Servos sweeps from 0-180 degress
-Servos sweeps from 180-0 degress
-Servos, index depending, be somewhere from 0-180 degress
-Servos, index depending, be somewhere from 180-0 degress
-Servos @ 0 degree
-Servos idx = 0, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 1, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 2, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 3, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 4, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos idx = 5, act. pos. (deg) = 0, pulseWidth (us) = 800
-Servos @ 90 degree
-Servos idx = 0, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 1, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 2, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 3, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 4, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos idx = 5, act. pos. (deg) = 90, pulseWidth (us) = 1620
-Servos @ 180 degree
-Servos idx = 0, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 1, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 2, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 3, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 4, act. pos. (deg) = 180, pulseWidth (us) = 2450
-Servos idx = 5, act. pos. (deg) = 180, pulseWidth (us) = 2450
 ```
 
 ---
 
-### 2. ESP32_ISR_MultiServos on ESP32_DEV
+### 2. ESP32_New_ISR_MultiServos on ESP32S2_DEV
 
 
 ```
-Starting ESP32_ISR_MultiServos on ESP32_DEV
-ESP32_ISR_Servo v1.3.0
+Starting ESP32_New_ISR_MultiServos on ESP32S2_DEV
+ESP32_New_ISR_Servo v1.2.0
+[ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
+[ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
+[ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
+[ISR_SERVO] _count = 0 - 10
+[ISR_SERVO] timer_set_alarm_value = 10.00
+[ISR_SERVO] Starting  ITimer OK
 Setup Servo1 OK
 Setup Servo2 OK
 Servo1 pos = 0, Servo2 pos = 180
@@ -472,42 +552,16 @@ Servo1 pos = 90, Servo2 pos = 90
 Servo1 pos = 120, Servo2 pos = 60
 Servo1 pos = 150, Servo2 pos = 30
 Servo1 pos = 180, Servo2 pos = 0
-Servo1 pos = 180, Servo2 pos = 0
-Servo1 pos = 150, Servo2 pos = 30
-Servo1 pos = 120, Servo2 pos = 60
-Servo1 pos = 90, Servo2 pos = 90
-Servo1 pos = 60, Servo2 pos = 120
-Servo1 pos = 30, Servo2 pos = 150
-Servo1 pos = 0, Servo2 pos = 180
-Servo1 pos = 0, Servo2 pos = 180
-Servo1 pos = 30, Servo2 pos = 150
-Servo1 pos = 60, Servo2 pos = 120
-Servo1 pos = 90, Servo2 pos = 90
-Servo1 pos = 120, Servo2 pos = 60
-Servo1 pos = 150, Servo2 pos = 30
-Servo1 pos = 180, Servo2 pos = 0
-Servo1 pos = 180, Servo2 pos = 0
-Servo1 pos = 150, Servo2 pos = 30
-Servo1 pos = 120, Servo2 pos = 60
-Servo1 pos = 90, Servo2 pos = 90
-Servo1 pos = 60, Servo2 pos = 120
-Servo1 pos = 30, Servo2 pos = 150
-Servo1 pos = 0, Servo2 pos = 180
-Servo1 pos = 0, Servo2 pos = 180
-Servo1 pos = 30, Servo2 pos = 150
-Servo1 pos = 60, Servo2 pos = 120
-Servo1 pos = 90, Servo2 pos = 90
-Servo1 pos = 120, Servo2 pos = 60
-Servo1 pos = 150, Servo2 pos = 30
 ```
 
 ---
 
-### 3. MultipleRandomServos on ESP32S3_DEV
+### 3. ESP32_New_MultipleRandomServos on ESP32S3_DEV
+
 
 ```
-Starting MultipleRandomServos on ESP32S3_DEV
-ESP32_ISR_Servo v1.3.0
+Starting ESP32_New_MultipleRandomServos on ESP32S3_DEV
+ESP32_New_ISR_Servo v1.2.0
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -521,88 +575,52 @@ Setup OK Servo index = 3
 Setup OK Servo index = 4
 Setup OK Servo index = 5
 Servos @ 0 degree
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 80 , pos = 0
 Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 80 , pos = 0
-0, pulseWidth (us) = [ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 80 , pos = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
 800
-[ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 80 , pos = 0
 Servos idx = 1, act. pos. (deg) = [ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 80 , pos = 0
-0, pulseWidth (us) = [ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 80 , pos = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 1
+[ISR_SERVO] cnt = 80 , pos = 0.00
 800
-[ISR_SERVO] Idx = 2
-[ISR_SERVO] cnt = 80 , pos = 0
 Servos idx = 2, act. pos. (deg) = [ISR_SERVO] Idx = 2
-[ISR_SERVO] cnt = 80 , pos = 0
-0, pulseWidth (us) = [ISR_SERVO] Idx = 2
-[ISR_SERVO] cnt = 80 , pos = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 2
+[ISR_SERVO] cnt = 80 , pos = 0.00
 800
-[ISR_SERVO] Idx = 3
-[ISR_SERVO] cnt = 80 , pos = 0
 Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
-[ISR_SERVO] cnt = 80 , pos = 0
-0, pulseWidth (us) = [ISR_SERVO] Idx = 3
-[ISR_SERVO] cnt = 80 , pos = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 3
+[ISR_SERVO] cnt = 80 , pos = 0.00
 800
-[ISR_SERVO] Idx = 4
-[ISR_SERVO] cnt = 80 , pos = 0
 Servos idx = 4, act. pos. (deg) = [ISR_SERVO] Idx = 4
-[ISR_SERVO] cnt = 80 , pos = 0
-0, pulseWidth (us) = [ISR_SERVO] Idx = 4
-[ISR_SERVO] cnt = 80 , pos = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 4
+[ISR_SERVO] cnt = 80 , pos = 0.00
 800
-[ISR_SERVO] Idx = 5
-[ISR_SERVO] cnt = 80 , pos = 0
 Servos idx = 5, act. pos. (deg) = [ISR_SERVO] Idx = 5
-[ISR_SERVO] cnt = 80 , pos = 0
-0, pulseWidth (us) = [ISR_SERVO] Idx = 5
-[ISR_SERVO] cnt = 80 , pos = 0
+[ISR_SERVO] cnt = 80 , pos = 0.00
+0.00, pulseWidth (us) = [ISR_SERVO] Idx = 5
+[ISR_SERVO] cnt = 80 , pos = 0.00
 800
 Servos @ 90 degree
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 162 , pos = 90
 Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 162 , pos = 90
-90, pulseWidth (us) = [ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 162 , pos = 90
-1620
-[ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 162 , pos = 90
-Servos idx = 1, act. pos. (deg) = [ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 162 , pos = 90
-90, pulseWidth (us) = [ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 162 , pos = 90
-1620
-[ISR_SERVO] Idx = 2
-[ISR_SERVO] cnt = 162 , pos = 90
-Servos idx = 2, act. pos. (deg) = [ISR_SERVO] Idx = 2
-[ISR_SERVO] cnt = 162 , pos = 90
-90, pulseWidth (us) = [ISR_SERVO] Idx = 2
-[ISR_SERVO] cnt = 162 , pos = 90
-1620
-[ISR_SERVO] Idx = 3
-[ISR_SERVO] cnt = 162 , pos = 90
-Servos idx = 3, act. pos. (deg) = [ISR_SERVO] Idx = 3
-[ISR_SERVO] cnt = 162 , pos = 90
-90, pulseWidth (us) = [ISR_SERVO] Idx = 3
-[ISR_SERVO] cnt = 162 , pos = 90
-1620
+[ISR_SERVO] cnt = 162 , pos = 90.00
+90.00, pulseWidth (us) = [ISR_SERVO] Idx = 0
+[ISR_SERVO] cnt = 162 , pos = 90.00
 ```
 
 ---
 
+### 4. ESP32_New_ISR_MultiServos on ESP32S3_DEV
 
-### 4. ESP32_ISR_MultiServos on ESP32S2_DEV
 
 ```
-Starting ESP32_ISR_MultiServos on ESP32S2_DEV
-ESP32_ISR_Servo v1.3.0
-[ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
+Starting ESP32_New_ISR_MultiServos on ESP32S3_DEV
+ESP32_New_ISR_Servo v1.2.0
+[ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
 [ISR_SERVO] _count = 0 - 10
@@ -611,28 +629,34 @@ ESP32_ISR_Servo v1.3.0
 Setup Servo1 OK
 Setup Servo2 OK
 Servo1 pos = 0, Servo2 pos = 180
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 80 , pos = 0
-[ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 245 , pos = 180
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 80 , pos = 1
-[ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 244 , pos = 179
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 81 , pos = 2
-[ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 243 , pos = 178
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 82 , pos = 3
-[ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 242 , pos = 177
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 83 , pos = 4
-[ISR_SERVO] Idx = 1
-[ISR_SERVO] cnt = 241 , pos = 176
-[ISR_SERVO] Idx = 0
-[ISR_SERVO] cnt = 84 , pos = 5
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 180, Servo2 pos = 0
+Servo1 pos = 150, Servo2 pos = 30
+Servo1 pos = 120, Servo2 pos = 60
+Servo1 pos = 90, Servo2 pos = 90
+Servo1 pos = 60, Servo2 pos = 120
+Servo1 pos = 30, Servo2 pos = 150
+Servo1 pos = 0, Servo2 pos = 180
+Servo1 pos = 0, Servo2 pos = 180
 ```
 
 ---
@@ -642,9 +666,10 @@ Servo1 pos = 0, Servo2 pos = 180
 
 Debug is enabled by default on Serial.
 
-You can also change the debugging level from 0 to 4. Be careful and using level 2 only for temporary debug purpose only.
+You can also change the debugging level from 0 to 2. Be careful and using level 2 only for temporary debug purpose only.
 
 ```cpp
+#define TIMER_INTERRUPT_DEBUG       1
 #define ISR_SERVO_DEBUG             1
 ```
 
@@ -662,7 +687,7 @@ Sometimes, the library will only work if you update the board core to the latest
 
 ### Issues
 
-Submit issues to: [ESP32_ISR_Servo issues](https://github.com/khoih-prog/ESP32_ISR_Servo/issues)
+Submit issues to: [ESP32_New_ISR_Servo issues](https://github.com/khoih-prog/ESP32_New_ISR_Servo/issues)
 
 ---
 ---
@@ -675,31 +700,24 @@ Submit issues to: [ESP32_ISR_Servo issues](https://github.com/khoih-prog/ESP32_I
 
 ## DONE
 
- 1. Similar features for Arduino (UNO, Mega, etc...) and ESP8266
+ 1. Similar features for Arduino (UNO, Mega, etc...), ESP32 and ESP8266
  2. Add functions `getPosition()` and `getPulseWidth()`
  3. Optimize the code
  4. Add more complicated examples
  5. Add support to new `ESP32-S3` (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.)
- 6. Add support to new `ESP32-S2` (ESP32S2_DEV, etc.)
- 7. Add support to new `ESP32-C3` (ESP32C3_DEV, etc.)
- 8. Convert to h-only library.
- 9. Optimize library code by using `reference-passing` instead of `value-passing`
-10. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
-11. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
-12. Fix breaking issue caused by **ESP32 core v2.0.1+** by increasing `TIMER_INTERVAL_MICRO` to `12uS` from `10uS`
+ 6. Convert to h-only library.
+ 7. Optimize library code by using `reference-passing` instead of `value-passing`
+ 8. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
+ 9. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
+10. Fix breaking issue caused by **ESP32 core v2.0.1+** by increasing `TIMER_INTERVAL_MICRO` to `12uS` from `10uS`
+
 
 ---
 ---
 
 ### Contributions and thanks
 
-1. Thanks to [raphweb](https://github.com/raphweb) for the PR [Fixed count >= min comparison for servo enable.](https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1) to fix bug and leading to the new releases v1.1.0
-
-<table>
-  <tr>
-    <td align="center"><a href="https://github.com/raphweb"><img src="https://github.com/raphweb.png" width="100px;" alt="raphweb"/><br /><sub><b>⭐️ raphweb</b></sub></a><br /></td>
-  </tr> 
-</table>
+Many thanks for everyone for bug reporting, new feature suggesting, testing and contributing to the development of this library. Especially to these people who have directly or indirectly contributed to this [ESP32_New_ISR_Servo library](https://github.com/khoih-prog/ESP32_New_ISR_Servo)
 
 
 ---
@@ -716,11 +734,10 @@ If you want to contribute to this project:
 
 ### License
 
-- The library is licensed under [MIT](https://github.com/khoih-prog/ESP32_ISR_Servo/blob/master/LICENSE)
+- The library is licensed under [MIT](https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/main/LICENSE)
 
 ---
 
 ## Copyright
 
-Copyright 2019- Khoi Hoang
-
+Copyright 2021- Khoi Hoang
