@@ -13,6 +13,7 @@
 
 ## Table of Contents
 
+* [Important Change from v1.2.0](#Important-Change-from-v120)
 * [Important Change from v1.1.0](#Important-Change-from-v110)
 * [Why do we need this ESP32_New_ISR_Servo library](#why-do-we-need-this-esp32_new_isr_servo-library)
   * [Features](#features)
@@ -61,6 +62,11 @@
 
 ---
 ---
+
+### Important Change from v1.2.0
+
+Please use the **new v1.2.0+** for **ESP32 core v2.0.1+**, or the library won't work anymore.
+
 
 ### Important Change from v1.1.0
 
@@ -117,7 +123,7 @@ This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_I
 ## Prerequisites
 
 1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
-2. [`ESP32 Core 2.0.2+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
+2. [`ESP32 Core 2.0.3+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
 
 
 ---
@@ -403,118 +409,8 @@ void loop()
 
 #### 1. File [ESP32_New_ISR_MultiServos.ino](examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino)
 
-```cpp
-#if !defined(ESP32)
-  #error This code is intended to run on the ESP32 platform! Please check your Tools->Board setting.
-#endif
+https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/e05bb5d4fc2abf2bd5551388f64414626047d90b/examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino#L65-L174
 
-#define TIMER_INTERRUPT_DEBUG       0
-#define ISR_SERVO_DEBUG             1
-
-// For ESP32_C3, select ESP32 timer number (0-1)
-// For ESP32 and ESP32_S2, select ESP32 timer number (0-3)
-#if defined( ARDUINO_ESP32C3_DEV )
-  #define USE_ESP32_TIMER_NO          1
-#else
-  #define USE_ESP32_TIMER_NO          3
-#endif
-  
-// To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
-#include "ESP32_New_ISR_Servo.h"
-
-//See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
-#define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
-#define PIN_LED           2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
-
-#define PIN_D0            0         // Pin D0 mapped to pin GPIO0/BOOT/ADC11/TOUCH1 of ESP32
-#define PIN_D1            1         // Pin D1 mapped to pin GPIO1/TX0 of ESP32
-#define PIN_D2            2         // Pin D2 mapped to pin GPIO2/ADC12/TOUCH2 of ESP32
-#define PIN_D3            3         // Pin D3 mapped to pin GPIO3/RX0 of ESP32
-#define PIN_D4            4         // Pin D4 mapped to pin GPIO4/ADC10/TOUCH0 of ESP32
-#define PIN_D5            5         // Pin D5 mapped to pin GPIO5/SPISS/VSPI_SS of ESP32
-#define PIN_D6            6         // Pin D6 mapped to pin GPIO6/FLASH_SCK of ESP32
-#define PIN_D7            7         // Pin D7 mapped to pin GPIO7/FLASH_D0 of ESP32
-#define PIN_D8            8         // Pin D8 mapped to pin GPIO8/FLASH_D1 of ESP32
-#define PIN_D9            9         // Pin D9 mapped to pin GPIO9/FLASH_D2 of ESP32
-
-// Published values for SG90 servos; adjust if needed
-#define MIN_MICROS      800  //544
-#define MAX_MICROS      2450
-
-int servoIndex1  = -1;
-int servoIndex2  = -1;
-
-void setup()
-{
-  Serial.begin(115200);
-  while (!Serial);
-
-  delay(500);
-
-  Serial.print(F("\nStarting ESP32_New_ISR_MultiServos on ")); Serial.println(ARDUINO_BOARD);
-  Serial.println(ESP32_NEW_ISR_SERVO_VERSION);
-  
-  //Select ESP32 timer USE_ESP32_TIMER_NO
-  ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
-
-  servoIndex1 = ESP32_ISR_Servos.setupServo(PIN_D2, MIN_MICROS, MAX_MICROS);
-  servoIndex2 = ESP32_ISR_Servos.setupServo(PIN_D3, MIN_MICROS, MAX_MICROS);
-
-  if (servoIndex1 != -1)
-    Serial.println(F("Setup Servo1 OK"));
-  else
-    Serial.println(F("Setup Servo1 failed"));
-
-  if (servoIndex2 != -1)
-    Serial.println(F("Setup Servo2 OK"));
-  else
-    Serial.println(F("Setup Servo2 failed"));
-}
-
-void loop()
-{
-  int position;
-
-  if ( ( servoIndex1 != -1) && ( servoIndex2 != -1) )
-  {
-    for (position = 0; position <= 180; position++)
-    {
-      // goes from 0 degrees to 180 degrees
-      // in steps of 1 degree
-
-      if (position % 30 == 0)
-      {
-        Serial.print(F("Servo1 pos = ")); Serial.print(position);
-        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
-      }
-
-      ESP32_ISR_Servos.setPosition(servoIndex1, position);
-      ESP32_ISR_Servos.setPosition(servoIndex2, 180 - position);
-      // waits 30ms for the servo to reach the position
-      delay(30);
-    }
-    
-    delay(5000);
-
-    for (position = 180; position >= 0; position--)
-    {
-      // goes from 180 degrees to 0 degrees
-      if (position % 30 == 0)
-      {
-        Serial.print(F("Servo1 pos = ")); Serial.print(position);
-        Serial.print(F(", Servo2 pos = ")); Serial.println(180 - position);
-      }
-
-      ESP32_ISR_Servos.setPosition(servoIndex1, position);
-      ESP32_ISR_Servos.setPosition(servoIndex2, 180 - position);
-      // waits 30ms for the servo to reach the position
-      delay(30);
-    }
-    
-    delay(5000);
-  }
-}
-```
 ---
 ---
 
@@ -524,7 +420,7 @@ void loop()
 
 ```
 Starting ESP32_New_MultipleRandomServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.1.0
+ESP32_New_ISR_Servo v1.2.0
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -640,7 +536,7 @@ Servos sweeps from 0-180 degress
 
 ```
 Starting ESP32_New_ISR_MultiServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.1.0
+ESP32_New_ISR_Servo v1.2.0
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -665,7 +561,7 @@ Servo1 pos = 180, Servo2 pos = 0
 
 ```
 Starting ESP32_New_MultipleRandomServos on ESP32S3_DEV
-ESP32_New_ISR_Servo v1.1.0
+ESP32_New_ISR_Servo v1.2.0
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -723,7 +619,7 @@ Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
 
 ```
 Starting ESP32_New_ISR_MultiServos on ESP32S3_DEV
-ESP32_New_ISR_Servo v1.1.0
+ESP32_New_ISR_Servo v1.2.0
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -804,15 +700,17 @@ Submit issues to: [ESP32_New_ISR_Servo issues](https://github.com/khoih-prog/ESP
 
 ## DONE
 
-1. Similar features for Arduino (UNO, Mega, etc...), ESP32 and ESP8266
-2. Add functions `getPosition()` and `getPulseWidth()`
-3. Optimize the code
-4. Add more complicated examples
-5. Add support to new `ESP32-S3` (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.)
-6. Convert to h-only library.
-7. Optimize library code by using `reference-passing` instead of `value-passing`
-8. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
-9. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
+ 1. Similar features for Arduino (UNO, Mega, etc...), ESP32 and ESP8266
+ 2. Add functions `getPosition()` and `getPulseWidth()`
+ 3. Optimize the code
+ 4. Add more complicated examples
+ 5. Add support to new `ESP32-S3` (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.)
+ 6. Convert to h-only library.
+ 7. Optimize library code by using `reference-passing` instead of `value-passing`
+ 8. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
+ 9. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
+10. Fix breaking issue caused by **ESP32 core v2.0.1+** by increasing `TIMER_INTERVAL_MICRO` to `12uS` from `10uS`
+
 
 ---
 ---
