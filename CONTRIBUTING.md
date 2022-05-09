@@ -1,14 +1,14 @@
-## Contributing to ESP32_New_ISR_Servo
+## Contributing to ESP32_ISR_Servo
 
 ### Reporting Bugs
 
-Please report bugs in ESP32_New_ISR_Servo if you find them.
+Please report bugs in ESP32_ISR_Servo if you find them.
 
 However, before reporting a bug please check through the following:
 
-* [Existing Open Issues](https://github.com/khoih-prog/ESP32_New_ISR_Servo/issues) - someone might have already encountered this.
+* [Existing Open Issues](https://github.com/khoih-prog/ESP32_ISR_Servo/issues) - someone might have already encountered this.
 
-If you don't find anything, please [open a new issue](https://github.com/khoih-prog/ESP32_New_ISR_Servo/issues/new).
+If you don't find anything, please [open a new issue](https://github.com/khoih-prog/ESP32_ISR_Servo/issues/new).
 
 ### How to submit a bug report
 
@@ -45,12 +45,11 @@ Steps to reproduce:
 3. ...
 4. ...
 ```
-
 ### Sending Feature Requests
 
 Feel free to post feature requests. It's helpful if you can explain exactly why the feature would be useful.
 
-There are usually some outstanding feature requests in the [existing issues list](https://github.com/khoih-prog/ESP32_New_ISR_Servo/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement), feel free to add comments to them.
+There are usually some outstanding feature requests in the [existing issues list](https://github.com/khoih-prog/ESP32_ISR_Servo/issues?q=is%3Aopen+is%3Aissue+label%3Aenhancement), feel free to add comments to them.
 
 ### Sending Pull Requests
 
