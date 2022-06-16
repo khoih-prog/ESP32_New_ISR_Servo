@@ -113,9 +113,9 @@ This library enables you to use `1 Hardware Timer` on an ESP32, ESP32_S2, ESP32_
 This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_ISR_Servo) currently supports these following boards:
 
 1. ESP32 boards, such as `ESP32_DEV`, etc.
-2. ESP32S2-based boards, such as `ESP32S2_DEV`, `ESP32_S2 Saola`, etc.
+2. ESP32S2-based boards, such as `ESP32S2_DEV`, `ESP32_S2 Saola`, Adafruit QTPY_ESP32S2, etc.
 3. ESP32C3-based boards, such as `ESP32C3_DEV`, etc. **New**
-4. ESP32_S3 (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, etc.) **New**
+4. ESP32_S3 (ESP32S3_DEV, ESP32_S3_BOX, UM TINYS3, UM PROS3, UM FEATHERS3, FEATHER_ESP32S3_NOPSRAM and QTPY_ESP32S3_NOPSRAM, etc.) **New**
  
 ---
 ---
@@ -420,7 +420,7 @@ https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/e05bb5d4fc2abf2bd5551388f
 
 ```
 Starting ESP32_New_MultipleRandomServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.2.0
+ESP32_New_ISR_Servo v1.2.1
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -536,7 +536,7 @@ Servos sweeps from 0-180 degress
 
 ```
 Starting ESP32_New_ISR_MultiServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.2.0
+ESP32_New_ISR_Servo v1.2.1
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -561,7 +561,7 @@ Servo1 pos = 180, Servo2 pos = 0
 
 ```
 Starting ESP32_New_MultipleRandomServos on ESP32S3_DEV
-ESP32_New_ISR_Servo v1.2.0
+ESP32_New_ISR_Servo v1.2.1
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -619,7 +619,7 @@ Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
 
 ```
 Starting ESP32_New_ISR_MultiServos on ESP32S3_DEV
-ESP32_New_ISR_Servo v1.2.0
+ESP32_New_ISR_Servo v1.2.1
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
