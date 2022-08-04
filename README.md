@@ -123,7 +123,7 @@ This [**ESP32_New_ISR_Servo** library](https://github.com/khoih-prog/ESP32_New_I
 ## Prerequisites
 
 1. [`Arduino IDE 1.8.19+` for Arduino](https://github.com/arduino/Arduino). [![GitHub release](https://img.shields.io/github/release/arduino/Arduino.svg)](https://github.com/arduino/Arduino/releases/latest)
-2. [`ESP32 Core 2.0.3+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
+2. [`ESP32 Core 2.0.4+`](https://github.com/espressif/arduino-esp32) for ESP32-based boards. [![Latest release](https://img.shields.io/github/release/espressif/arduino-esp32.svg)](https://github.com/espressif/arduino-esp32/releases/latest/)
 
 
 ---
@@ -294,7 +294,10 @@ How to use:
 #include "ESP32_New_ISR_Servo.h"
 
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
-#define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
+#if !defined(LED_BUILTIN)
+  #define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
+#endif
+
 #define PIN_LED           2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
 
 #define PIN_D0            0         // Pin D0 mapped to pin GPIO0/BOOT/ADC11/TOUCH1 of ESP32
@@ -409,7 +412,7 @@ void loop()
 
 #### 1. File [ESP32_New_ISR_MultiServos.ino](examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino)
 
-https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/e05bb5d4fc2abf2bd5551388f64414626047d90b/examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino#L65-L174
+https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/463c03c67432e83a12ce23f45cffcc6d90474523/examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino#L65-L177
 
 ---
 ---
@@ -420,7 +423,7 @@ https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/e05bb5d4fc2abf2bd5551388f
 
 ```
 Starting ESP32_New_MultipleRandomServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.2.1
+ESP32_New_ISR_Servo v1.3.0
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -536,7 +539,7 @@ Servos sweeps from 0-180 degress
 
 ```
 Starting ESP32_New_ISR_MultiServos on ESP32S2_DEV
-ESP32_New_ISR_Servo v1.2.1
+ESP32_New_ISR_Servo v1.3.0
 [ISR_SERVO] ESP32_S2_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -561,7 +564,7 @@ Servo1 pos = 180, Servo2 pos = 0
 
 ```
 Starting ESP32_New_MultipleRandomServos on ESP32S3_DEV
-ESP32_New_ISR_Servo v1.2.1
+ESP32_New_ISR_Servo v1.3.0
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -619,7 +622,7 @@ Servos idx = 0, act. pos. (deg) = [ISR_SERVO] Idx = 0
 
 ```
 Starting ESP32_New_ISR_MultiServos on ESP32S3_DEV
-ESP32_New_ISR_Servo v1.2.1
+ESP32_New_ISR_Servo v1.3.0
 [ISR_SERVO] ESP32_S3_TimerInterrupt: _timerNo = 3 , _fre = 1000000
 [ISR_SERVO] TIMER_BASE_CLK = 80000000 , TIMER_DIVIDER = 80
 [ISR_SERVO] _timerIndex = 1 , _timerGroup = 1
@@ -710,6 +713,7 @@ Submit issues to: [ESP32_New_ISR_Servo issues](https://github.com/khoih-prog/ESP
  8. Improve accuracy by using `float`, instead of `uint32_t` for `position` in degrees
  9. Add example [multiFileProject](examples/multiFileProject) to demo for multiple-file project
 10. Fix breaking issue caused by **ESP32 core v2.0.1+** by increasing `TIMER_INTERVAL_MICRO` to `12uS` from `10uS`
+10. Suppress errors and warnings for new ESP32 core v2.0.4
 
 
 ---
