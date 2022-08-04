@@ -14,8 +14,8 @@
   #error This code is intended to run on the ESP32 platform! Please check your Tools->Board setting.
 #endif
 
-#define ESP32_NEW_ISR_SERVO_VERSION_MIN_TARGET      "ESP32_New_ISR_Servo v1.1.0"
-#define ESP32_NEW_ISR_SERVO_VERSION_MIN             1001000
+#define ESP32_NEW_ISR_SERVO_VERSION_MIN_TARGET      "ESP32_New_ISR_Servo v1.3.0"
+#define ESP32_NEW_ISR_SERVO_VERSION_MIN             1003000
 
 #include "multiFileProject.h"
 

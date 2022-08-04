@@ -27,7 +27,7 @@
   Based on BlynkTimer.h
   Author: Volodymyr Shymanskyy
 
-  Version: 1.2.1
+  Version: 1.3.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -35,6 +35,7 @@
   1.1.0   K Hoang      12/02/2022 Add support to new ESP32-S3. Convert to h-only library. Optimize code
   1.2.0   K Hoang      08/05/2022 Fix issue with core v2.0.1+
   1.2.1   K Hoang      16/06/2022 Add support to new Adafruit boards
+  1.3.0   K Hoang      03/08/2022 Suppress errors and warnings for new ESP32 core
  *****************************************************************************************************************************/
 
 #pragma once
@@ -72,8 +73,8 @@
  
 typedef enum
 {
-  TIMER_GROUP_0 = 0, /*!<Hw timer group 0
-  TIMER_GROUP_1 = 1, /*!<Hw timer group 1
+  TIMER_GROUP_0 = 0, // Hw timer group 0
+  TIMER_GROUP_1 = 1, // Hw timer group 1
   TIMER_GROUP_MAX,
 } timer_group_t;
 
@@ -82,8 +83,8 @@ typedef enum
  
 typedef enum 
 {
-  TIMER_0 = 0, /*!<Select timer0 of GROUPx
-  TIMER_1 = 1, /*!<Select timer1 of GROUPx
+  TIMER_0 = 0, // Select timer0 of GROUPx
+  TIMER_1 = 1, // Select timer1 of GROUPx
   TIMER_MAX,
 } timer_idx_t;
 
@@ -151,6 +152,31 @@ typedef struct
 
 */
 
+/*
+//ESP32 core v2.0.4, timer_config_t defined in tools/sdk/esp32/include/hal/include/hal/timer_types.h:
+
+#if SOC_TIMER_GROUP_SUPPORT_XTAL
+
+typedef enum {
+    TIMER_SRC_CLK_APB = 0,  // Select APB as the source clock
+    TIMER_SRC_CLK_XTAL = 1, // Select XTAL as the source clock
+} timer_src_clk_t;
+#endif
+
+typedef struct {
+    timer_alarm_t alarm_en;      			// Timer alarm enable
+    timer_start_t counter_en;    			// Counter enable
+    timer_intr_mode_t intr_type; 			// Interrupt mode
+    timer_count_dir_t counter_dir; 		// Counter direction 
+    timer_autoreload_t auto_reload;   // Timer auto-reload
+    uint32_t divider;   							// Counter clock divider. The divider's range is from from 2 to 65536
+#if SOC_TIMER_GROUP_SUPPORT_XTAL
+    timer_src_clk_t clk_src;  				// Use XTAL as source clock
+#endif
+} timer_config_t;
+
+*/
+
 #ifndef USE_ESP32_TIMER_NO
   #define USE_ESP32_TIMER_NO        1
 #endif
@@ -199,8 +225,11 @@ class ESP32FastTimerInterrupt
       .counter_en   = TIMER_START,          //starts counting counter once timer_init called
       .intr_type    = TIMER_INTR_MAX,
       .counter_dir  = TIMER_COUNT_UP,       //counts from 0 to counter value
-      .auto_reload  = TIMER_AUTORELOAD_EN,  // reloads counter automatically
-      .divider      = TIMER_DIVIDER
+      .auto_reload  = TIMER_AUTORELOAD_EN,  //reloads counter automatically
+      .divider      = TIMER_DIVIDER,
+#if SOC_TIMER_GROUP_SUPPORT_XTAL
+      .clk_src      = TIMER_SRC_CLK_XTAL  	//Use XTAL as source clock
+#endif      
     };
 
     timer_idx_t       _timerIndex;
