@@ -153,27 +153,24 @@ typedef struct
 */
 
 /*
-//ESP32 core v2.0.4, timer_config_t defined in tools/sdk/esp32/include/hal/include/hal/timer_types.h:
-
-#if SOC_TIMER_GROUP_SUPPORT_XTAL
-
-typedef enum {
+  //ESP32 core v2.0.4, timer_config_t defined in tools/sdk/esp32/include/hal/include/hal/timer_types.h:
+  #if SOC_TIMER_GROUP_SUPPORT_XTAL
+  typedef enum {
     TIMER_SRC_CLK_APB = 0,  // Select APB as the source clock
     TIMER_SRC_CLK_XTAL = 1, // Select XTAL as the source clock
-} timer_src_clk_t;
-#endif
-
-typedef struct {
-    timer_alarm_t alarm_en;      			// Timer alarm enable
-    timer_start_t counter_en;    			// Counter enable
-    timer_intr_mode_t intr_type; 			// Interrupt mode
-    timer_count_dir_t counter_dir; 		// Counter direction 
+  } timer_src_clk_t;
+  #endif
+  typedef struct {
+    timer_alarm_t alarm_en;           // Timer alarm enable
+    timer_start_t counter_en;         // Counter enable
+    timer_intr_mode_t intr_type;      // Interrupt mode
+    timer_count_dir_t counter_dir;    // Counter direction
     timer_autoreload_t auto_reload;   // Timer auto-reload
-    uint32_t divider;   							// Counter clock divider. The divider's range is from from 2 to 65536
-#if SOC_TIMER_GROUP_SUPPORT_XTAL
-    timer_src_clk_t clk_src;  				// Use XTAL as source clock
-#endif
-} timer_config_t;
+    uint32_t divider;                 // Counter clock divider. The divider's range is from from 2 to 65536
+  #if SOC_TIMER_GROUP_SUPPORT_XTAL
+    timer_src_clk_t clk_src;          // Use XTAL as source clock
+  #endif
+  } timer_config_t;
 
 */
 
