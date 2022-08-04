@@ -228,7 +228,7 @@ class ESP32FastTimerInterrupt
       .auto_reload  = TIMER_AUTORELOAD_EN,  //reloads counter automatically
       .divider      = TIMER_DIVIDER,
 #if SOC_TIMER_GROUP_SUPPORT_XTAL
-      .clk_src      = TIMER_SRC_CLK_XTAL  	//Use XTAL as source clock
+      .clk_src      = TIMER_SRC_CLK_XTAL    //Use XTAL as source clock
 #endif      
     };
 
