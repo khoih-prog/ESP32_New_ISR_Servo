@@ -416,7 +416,7 @@ void loop()
 
 #### 1. File [ESP32_New_ISR_MultiServos.ino](examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino)
 
-https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/463c03c67432e83a12ce23f45cffcc6d90474523/examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino#L65-L177
+https://github.com/khoih-prog/ESP32_New_ISR_Servo/blob/b617595a27f5716bd911d0de733b0a623e727ab9/examples/ESP32_New_ISR_MultiServos/ESP32_New_ISR_MultiServos.ino#L65-L186
 
 ---
 ---
@@ -748,4 +748,4 @@ If you want to contribute to this project:
 
 ## Copyright
 
-Copyright 2021- Khoi Hoang
+Copyright (C) 2021- Khoi Hoang
