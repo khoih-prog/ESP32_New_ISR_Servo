@@ -9,10 +9,10 @@
   The ESP32, ESP32_S2, ESP32_S3, ESP32_C3 have two timer groups, TIMER_GROUP_0 and TIMER_GROUP_1
   1) each group of ESP32, ESP32_S2, ESP32_S3 has two general purpose hardware timers, TIMER_0 and TIMER_1
   2) each group of ESP32_C3 has ony one general purpose hardware timer, TIMER_0
-  
-  All the timers are based on 64-bit counters (except 54-bit counter for ESP32_S3 counter) and 16 bit prescalers. 
-  The timer counters can be configured to count up or down and support automatic reload and software reload. 
-  They can also generate alarms when they reach a specific value, defined by the software. 
+
+  All the timers are based on 64-bit counters (except 54-bit counter for ESP32_S3 counter) and 16 bit prescalers.
+  The timer counters can be configured to count up or down and support automatic reload and software reload.
+  They can also generate alarms when they reach a specific value, defined by the software.
   The value of the counter can be read by the software program.
 
   Now these new 16 ISR-based PWM servo contro uses only 1 hardware timer.
@@ -27,7 +27,7 @@
   Based on BlynkTimer.h
   Author: Volodymyr Shymanskyy
 
-  Version: 1.3.0
+  Version: 1.4.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -36,6 +36,7 @@
   1.2.0   K Hoang      08/05/2022 Fix issue with core v2.0.1+
   1.2.1   K Hoang      16/06/2022 Add support to new Adafruit boards
   1.3.0   K Hoang      03/08/2022 Suppress errors and warnings for new ESP32 core
+  1.4.0   K Hoang      16/11/2022 Fix doubled time for ESP32_C3, ESP32_S2 and ESP32_S3
  *****************************************************************************************************************************/
 
 #pragma once
@@ -65,9 +66,9 @@ static ESP32_ISR_Servo ESP32_ISR_Servos;  // create servo object to control up t
 
 
 bool IRAM_ATTR ESP32_ISR_Servo_Handler(void * timerNo)
-{ 
+{
   ESP32_ISR_Servos.run();
-  
+
   return true;
 }
 
@@ -180,7 +181,8 @@ bool ESP32_ISR_Servo::setPosition(const uint8_t& servoIndex, const float& positi
     portENTER_CRITICAL(&timerMux);
 
     servo[servoIndex].position  = position;
-    servo[servoIndex].count     = map(position, 0, 180, servo[servoIndex].min, servo[servoIndex].max) / TIMER_INTERVAL_MICRO;
+    servo[servoIndex].count     = map(position, 0, 180, servo[servoIndex].min,
+                                      servo[servoIndex].max) / TIMER_INTERVAL_MICRO;
 
     // ESP32 is a multi core / multi processing chip.
     // It is mandatory to disable task switches during modifying shared vars
@@ -375,8 +377,8 @@ void ESP32_ISR_Servo::enableAll()
   {
     // Bug fix. See "Fixed count >= min comparison for servo enable."
     // (https://github.com/khoih-prog/ESP32_ISR_Servo/pull/1)
-    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled 
-      && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
+    if ( (servo[servoIndex].count >= servo[servoIndex].min / TIMER_INTERVAL_MICRO ) && !servo[servoIndex].enabled
+         && (servo[servoIndex].pin <= ESP32_MAX_PIN) )
     {
       servo[servoIndex].enabled = true;
     }

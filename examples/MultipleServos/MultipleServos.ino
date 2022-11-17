@@ -9,10 +9,10 @@
   The ESP32, ESP32_S2, ESP32_S3, ESP32_C3 have two timer groups, TIMER_GROUP_0 and TIMER_GROUP_1
   1) each group of ESP32, ESP32_S2, ESP32_S3 has two general purpose hardware timers, TIMER_0 and TIMER_1
   2) each group of ESP32_C3 has ony one general purpose hardware timer, TIMER_0
-  
-  All the timers are based on 64-bit counters (except 54-bit counter for ESP32_S3 counter) and 16 bit prescalers. 
-  The timer counters can be configured to count up or down and support automatic reload and software reload. 
-  They can also generate alarms when they reach a specific value, defined by the software. 
+
+  All the timers are based on 64-bit counters (except 54-bit counter for ESP32_S3 counter) and 16 bit prescalers.
+  The timer counters can be configured to count up or down and support automatic reload and software reload.
+  They can also generate alarms when they reach a specific value, defined by the software.
   The value of the counter can be read by the software program.
 
   Now these new 16 ISR-based PWM servo contro uses only 1 hardware timer.
@@ -63,7 +63,7 @@
 *****************************************************************************************************************************/
 
 #if !defined(ESP32)
-  #error This code is intended to run on the ESP32 platform! Please check your Tools->Board setting.
+	#error This code is intended to run on the ESP32 platform! Please check your Tools->Board setting.
 #endif
 
 #define TIMER_INTERRUPT_DEBUG       0
@@ -72,17 +72,20 @@
 // For ESP32_C3, select ESP32 timer number (0-1)
 // For ESP32 and ESP32_S2, select ESP32 timer number (0-3)
 #if defined( ARDUINO_ESP32C3_DEV )
-  #define USE_ESP32_TIMER_NO          1
+	#define USE_ESP32_TIMER_NO          1
 #else
-  #define USE_ESP32_TIMER_NO          3
+	#define USE_ESP32_TIMER_NO          3
 #endif
-  
+
 // To be included only in main(), .ino with setup() to avoid `Multiple Definitions` Linker Error
 #include "ESP32_New_ISR_Servo.h"
 
+// Don't use PIN_D1 in core v2.0.0 and v2.0.1. Check https://github.com/espressif/arduino-esp32/issues/5868
+// Don't use PIN_D2 with ESP32_C3 (crash)
+
 //See file .../hardware/espressif/esp32/variants/(esp32|doitESP32devkitV1)/pins_arduino.h
 #if !defined(LED_BUILTIN)
-  #define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
+	#define LED_BUILTIN       2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
 #endif
 
 #define PIN_LED           2         // Pin D2 mapped to pin GPIO2/ADC12 of ESP32, control on-board LED
@@ -106,72 +109,76 @@
 
 typedef struct
 {
-  int     servoIndex;
-  uint8_t servoPin;
+	int     servoIndex;
+	uint8_t servoPin;
 } ISR_servo_t;
 
 ISR_servo_t ISR_servo[NUM_SERVOS] =
 {
-  { -1, PIN_D2 }, { -1, PIN_D3 }, { -1, PIN_D4 }, { -1, PIN_D5 }, { -1, PIN_D6 }, { -1, PIN_D7 }
+	{ -1, PIN_D3 }, { -1, PIN_D4 }, { -1, PIN_D5 }, { -1, PIN_D6 }, { -1, PIN_D7 }, { -1, PIN_D8 }
 };
 
 void setup()
 {
-  Serial.begin(115200);
-  while (!Serial);
+	Serial.begin(115200);
 
-  delay(200);
+	while (!Serial && millis() < 5000);
 
-  Serial.print(F("\nStarting MultipleServos on ")); Serial.println(ARDUINO_BOARD);
-  Serial.println(ESP32_NEW_ISR_SERVO_VERSION);
-  
-  //Select ESP32 timer USE_ESP32_TIMER_NO
-  ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
+  delay(500);
 
-  for (int index = 0; index < NUM_SERVOS; index++)
-  {
-    ISR_servo[index].servoIndex = ESP32_ISR_Servos.setupServo(ISR_servo[index].servoPin, MIN_MICROS, MAX_MICROS);
+	Serial.print(F("\nStarting MultipleServos on "));
+	Serial.println(ARDUINO_BOARD);
+	Serial.println(ESP32_NEW_ISR_SERVO_VERSION);
 
-    if (ISR_servo[index].servoIndex != -1)
-    {
-      Serial.print(F("Setup OK Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
-    }
-    else
-    {
-      Serial.print(F("Setup Failed Servo index = ")); Serial.println(ISR_servo[index].servoIndex);
-    }
-  }
+	//Select ESP32 timer USE_ESP32_TIMER_NO
+	ESP32_ISR_Servos.useTimer(USE_ESP32_TIMER_NO);
+
+	for (int index = 0; index < NUM_SERVOS; index++)
+	{
+		ISR_servo[index].servoIndex = ESP32_ISR_Servos.setupServo(ISR_servo[index].servoPin, MIN_MICROS, MAX_MICROS);
+
+		if (ISR_servo[index].servoIndex != -1)
+		{
+			Serial.print(F("Setup OK Servo index = "));
+			Serial.println(ISR_servo[index].servoIndex);
+		}
+		else
+		{
+			Serial.print(F("Setup Failed Servo index = "));
+			Serial.println(ISR_servo[index].servoIndex);
+		}
+	}
 }
 
 void loop()
 {
-  int position;      // position in degrees
+	int position;      // position in degrees
 
-  for (position = 0; position <= 180; position += 5)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
-    }
-    
-    // waits 1s for the servo to reach the position
-    delay(1000);
-  }
+	for (position = 0; position <= 180; position += 5)
+	{
+		// goes from 0 degrees to 180 degrees
+		// in steps of 1 degree
+		for (int index = 0; index < NUM_SERVOS; index++)
+		{
+			ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180 );
+		}
 
-  for (position = 180; position >= 0; position -= 5)
-  {
-    // goes from 0 degrees to 180 degrees
-    // in steps of 1 degree
-    for (int index = 0; index < NUM_SERVOS; index++)
-    {
-      ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180);
-    }
-    
-    // waits 1s for the servo to reach the position
-    delay(1000);
-  }
+		// waits 1s for the servo to reach the position
+		delay(1000);
+	}
 
-  delay(5000);
+	for (position = 180; position >= 0; position -= 5)
+	{
+		// goes from 0 degrees to 180 degrees
+		// in steps of 1 degree
+		for (int index = 0; index < NUM_SERVOS; index++)
+		{
+			ESP32_ISR_Servos.setPosition(ISR_servo[index].servoIndex, (position + index * (180 / NUM_SERVOS)) % 180);
+		}
+
+		// waits 1s for the servo to reach the position
+		delay(1000);
+	}
+
+	delay(5000);
 }

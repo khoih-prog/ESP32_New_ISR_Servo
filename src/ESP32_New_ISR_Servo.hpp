@@ -27,7 +27,7 @@
   Based on BlynkTimer.h
   Author: Volodymyr Shymanskyy
 
-  Version: 1.3.0
+  Version: 1.4.0
 
   Version Modified By   Date      Comments
   ------- -----------  ---------- -----------
@@ -36,6 +36,7 @@
   1.2.0   K Hoang      08/05/2022 Fix issue with core v2.0.1+
   1.2.1   K Hoang      16/06/2022 Add support to new Adafruit boards
   1.3.0   K Hoang      03/08/2022 Suppress errors and warnings for new ESP32 core
+  1.4.0   K Hoang      16/11/2022 Fix doubled time for ESP32_C3, ESP32_S2 and ESP32_S3
  *****************************************************************************************************************************/
 
 #pragma once
@@ -43,35 +44,53 @@
 #ifndef ESP32_New_ISR_Servo_HPP
 #define ESP32_New_ISR_Servo_HPP
 
+////////////////////////////////////////
+
 #if ( ARDUINO_ESP32S2_DEV || ARDUINO_FEATHERS2 || ARDUINO_ESP32S2_THING_PLUS || ARDUINO_MICROS2 || \
         ARDUINO_METRO_ESP32S2 || ARDUINO_MAGTAG29_ESP32S2 || ARDUINO_FUNHOUSE_ESP32S2 || \
         ARDUINO_ADAFRUIT_FEATHER_ESP32S2_NOPSRAM || ARDUINO_ADAFRUIT_QTPY_ESP32S2)
   #warning Using ESP32_S2-based board
   #define USING_ESP32_S2_ISR_SERVO         true
+
+////////////////////////////////////////
+  
 #elif ( defined(ARDUINO_ESP32S3_DEV) || defined(ARDUINO_ESP32_S3_BOX) || defined(ARDUINO_TINYS3) || \
         defined(ARDUINO_PROS3) || defined(ARDUINO_FEATHERS3) || defined(ARDUINO_ADAFRUIT_FEATHER_ESP32S3_NOPSRAM) || \
         defined(ARDUINO_ADAFRUIT_QTPY_ESP32S3_NOPSRAM))
   #warning Using ESP32_S3-based board      
   #define USING_ESP32_S3_ISR_SERVO         true    
+
+////////////////////////////////////////
+  
 #elif ( ARDUINO_ESP32C3_DEV )
   #warning Using ESP32_C3-based board
   #define USING_ESP32_C3_ISR_SERVO         true
+
+////////////////////////////////////////
+  
 #elif defined(ESP32)
   #warning Using ESP32-based board
   #define USING_ESP32_ISR_SERVO            true
+
+////////////////////////////////////////
+  
 #else
   #error This code is intended to run on the ESP32 platform! Please check your Tools->Board setting.  
 #endif
 
+////////////////////////////////////////
+
 #ifndef ESP32_NEW_ISR_SERVO_VERSION
-  #define ESP32_NEW_ISR_SERVO_VERSION           "ESP32_New_ISR_Servo v1.3.0"
+  #define ESP32_NEW_ISR_SERVO_VERSION           "ESP32_New_ISR_Servo v1.4.0"
   
   #define ESP32_NEW_ISR_SERVO_VERSION_MAJOR     1
-  #define ESP32_NEW_ISR_SERVO_VERSION_MINOR     3
+  #define ESP32_NEW_ISR_SERVO_VERSION_MINOR     4
   #define ESP32_NEW_ISR_SERVO_VERSION_PATCH     0
 
-  #define ESP32_NEW_ISR_SERVO_VERSION_INT       1003000
+  #define ESP32_NEW_ISR_SERVO_VERSION_INT       1004000
 #endif
+
+////////////////////////////////////////
 
 #include <stddef.h>
 
@@ -87,6 +106,8 @@
 
 #include "ESP32_New_ISR_Servo_Debug.h"
 #include "ESP32_New_FastTimerInterrupt.h"
+
+////////////////////////////////////////
 
 #if defined(NUM_DIGITAL_PINS)
   #if (ISR_SERVO_DEBUG > 1)
@@ -107,6 +128,8 @@
 
 #define ESP32_WRONG_PIN         255
 
+////////////////////////////////////////
+
 // From Servo.h - Copyright (c) 2009 Michael Margolis.  All right reserved.
 
 #define MIN_PULSE_WIDTH         544       // the shortest pulse sent to a servo  
@@ -114,17 +137,22 @@
 #define DEFAULT_PULSE_WIDTH     1500      // default pulse width when servo is attached
 #define REFRESH_INTERVAL        20000     // minumim time to refresh servos in microseconds 
 
+////////////////////////////////////////
+
 extern bool IRAM_ATTR ESP32_ISR_Servo_Handler(void * timerNo);
+
+////////////////////////////////////////
 
 class ESP32_ISR_Servo
 {
-
   public:
     // maximum number of servos
     const static uint8_t MAX_SERVOS = 16;
 
     // constructor
     ESP32_ISR_Servo();
+
+		////////////////////////////////////////
 
     // destructor
     ~ESP32_ISR_Servo()
@@ -136,7 +164,11 @@ class ESP32_ISR_Servo
       }
     }
 
+		////////////////////////////////////////
+
     void IRAM_ATTR run();
+
+		////////////////////////////////////////
 
     // useTimer select which timer (0-3) of ESP32 to use for Servos
     //Return true if timerN0 in range
@@ -150,6 +182,8 @@ class ESP32_ISR_Servo
       
       return false;
     }
+
+		////////////////////////////////////////
 
     // Bind servo to the timer and pin, return servoIndex
     int8_t setupServo(const uint8_t& pin, const uint16_t& min = MIN_PULSE_WIDTH, const uint16_t& max = MAX_PULSE_WIDTH);
@@ -196,6 +230,8 @@ class ESP32_ISR_Servo
     // returns the number of used servos
     int8_t getNumServos();
 
+		////////////////////////////////////////
+
     // returns the number of available servos
     int8_t getNumAvailableServos() 
     {
@@ -205,11 +241,15 @@ class ESP32_ISR_Servo
         return MAX_SERVOS - numServos;
     }
 
+		////////////////////////////////////////
+
   private:
 
     // Use 10 microsecs timer => not working from core v2.0.1+
     // Use 12 microsecs timer now, just fine enough to control Servo, normally requiring pulse width (PWM) 500-2000us in 20ms.
 #define TIMER_INTERVAL_MICRO        12
+
+		////////////////////////////////////////
 
     void init()
     {
@@ -241,8 +281,12 @@ class ESP32_ISR_Servo
       timerMux = portMUX_INITIALIZER_UNLOCKED;
     }
 
+		////////////////////////////////////////
+
     // find the first available slot
     int8_t findFirstFreeSlot();
+
+		////////////////////////////////////////
 
     typedef struct
     {
@@ -253,6 +297,8 @@ class ESP32_ISR_Servo
       uint16_t      min;
       uint16_t      max;
     } servo_t;
+
+		////////////////////////////////////////
 
     volatile servo_t servo[MAX_SERVOS];
 
@@ -272,5 +318,6 @@ class ESP32_ISR_Servo
     ESP32FastTimer* ESP32_ITimer;
 };
 
+////////////////////////////////////////
 
 #endif      // ESP32_New_ISR_Servo_HPP
