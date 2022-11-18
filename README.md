@@ -533,7 +533,7 @@ Servos idx = 5, act. pos. (deg) = [ISR_SERVO] Idx = 5
 180, pulseWidth (us) = [ISR_SERVO] Idx = 5
 [ISR_SERVO] cnt = 245 , pos = 180
 2450
-Servos sweeps from 0-180 degress
+Servos sweeps from 0-180 degrees
 ```
 
 ---
